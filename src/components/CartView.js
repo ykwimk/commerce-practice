@@ -1,11 +1,14 @@
 import React from 'react';
-import './CartView.css';
+import classNames from 'classnames';
+import style from './CartView.scss';
 import CardView from './CardView';
+
+const cx = classNames.bind(style)
 
 const CartView = ({ list }) => {
   return (
-    <div className="wrapper">
-      <div className="cart">
+    <div className={cx("wrapper")}>
+      <div className={cx("cart")}>
         {list.map((item, idx) => (
           <CardView
             isCart
@@ -14,8 +17,8 @@ const CartView = ({ list }) => {
           />
         ))}
       </div>
-      <div className="priceWrap">
-        <div className="content">
+      <div className={cx("priceWrap")}>
+        <div className={cx("content")}>
           <table cellPadding="0" cellSpacing="0">
             <tbody>
               <tr>
@@ -26,7 +29,7 @@ const CartView = ({ list }) => {
                 <th>일반 과일</th>
                 <td>8,500원</td>
               </tr>
-              <tr className="total">
+              <tr className={cx("total")}>
                 <th>총 상품금액</th>
                 <td>93,500원</td>
               </tr>
@@ -34,7 +37,7 @@ const CartView = ({ list }) => {
           </table>
           <button
             type="button"
-            className="payment"
+            className={cx("payment")}
           >
             결제하기
           </button>

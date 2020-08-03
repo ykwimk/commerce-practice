@@ -1,24 +1,27 @@
 import React from 'react';
-import './HeaderView.css';
+import classNames from 'classnames';
+import style from './HeaderView.scss';
+
+const cx = classNames.bind(style)
 
 const HeaderView = ({ page, cartList, onClickTab }) => {
   return (
     <header>
       <h1>과일</h1>
-      <div className="buttonWrap">
+      <div className={cx('buttonWrap')}>
         <button
           type="button"
-          className={page === 'list' ? 'active' : ''}
+          className={cx(page === 'list' ? 'active' : '')}
           onClick={() => onClickTab('list')}
         >상품목록</button>
         <button
           type="button"
-          className={page === 'cart' ? 'active': ''}
+          className={cx(page === 'cart' ? 'active': '')}
           onClick={() => onClickTab('cart')}
         >
           장바구니
           {cartList && cartList.length > 0 &&
-            <span className="count">{cartList}</span>
+            <span className={cx('count')}>{cartList}</span>
           }
         </button>
       </div>

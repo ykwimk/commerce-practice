@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import { fruits } from '../api/fruits';
+//import { fruits } from '../api/fruits';
+import axios from 'axios';
 import ListView from '../components/ListView';
 import CartView from '../components/CartView';
 import HeaderView from '../components/HeaderView';
@@ -14,32 +15,30 @@ class FruitContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ list: this.getFruitsList(0) })
+    this.getFruitsList(0)
   }
 
   getFruitsList = (filter) => {
-    /*
-      axios.get('/api/fruits')
-      .then((response) => {
-        const fruits = response.data
+    axios.get('http://localhost:3001/api')
+    .then((response) => {
+      const fruits = response.data.fruits
+      this.setState(prevState => {
         if (filter === 0) {
-          return _.sortBy(fruits, (o) => [!o.isNew, o.id])
+          return {
+            list: _.sortBy(fruits, (o) => [!o.isNew, o.id])
+          }
         } else if (filter === 1) {
-          return fruits.filter(v => !v.isNew)
+          return {
+            list: fruits.filter(v => !v.isNew)
+          }
         } else {
-          return fruits.filter(v => v.isNew)
+          return {
+            list: fruits.filter(v => v.isNew)
+          }
         }
       })
-      .catch(err => console.log(err))
-    */
-
-    if (filter === 0) {
-      return _.sortBy(fruits, (o) => [!o.isNew, o.id])
-    } else if (filter === 1) {
-      return fruits.filter(v => !v.isNew)
-    } else {
-      return fruits.filter(v => v.isNew)
-    }
+    })
+    .catch(err => console.log(err))
   }
 
   onClickTab = (page) => {
@@ -47,9 +46,8 @@ class FruitContainer extends React.Component {
   }
 
   onClickFilter = (filter) => {
-    this.setState({
-      filter,
-      list: this.getFruitsList(filter)
+    this.setState({ filter, }, () => {
+      this.getFruitsList(filter)
     })
   }
 
@@ -69,6 +67,8 @@ class FruitContainer extends React.Component {
 
   render() {
     const { page, filter, list, cartList } = this.state
+    if (_.isEmpty(list)) return null
+
     return (
       <>
         <HeaderView
