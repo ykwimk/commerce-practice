@@ -1,0 +1,25 @@
+.filter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 48px;
+}
+.filter button {
+  display: inline-block;
+  margin-left: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 100%;
+  color: #333333;
+}
+.filter button:first-child {
+  margin-left: 0;
+}
+.filter button.active {
+  background: #FFD400;
+}
+.filter button i {
+  color: #FB842D;
+}
