@@ -1,12 +1,10 @@
 .list {
-  ul{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    &::after {
-      content: "";
-      flex: auto;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  &::after {
+    content: "";
+    flex: auto;
   }
 }
