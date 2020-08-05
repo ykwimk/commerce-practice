@@ -19,7 +19,7 @@ class FruitContainer extends React.Component {
   }
 
   getFruitsList = (filter) => {
-    axios.get('http://localhost:3001/api')
+    axios.get('http://localhost:3001/list')
     .then((response) => {
       const fruits = response.data.fruits
       this.setState(prevState => {

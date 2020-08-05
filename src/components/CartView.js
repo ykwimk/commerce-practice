@@ -9,13 +9,15 @@ const CartView = ({ list }) => {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("cart")}>
-        {list.map((item, idx) => (
-          <CardView
-            isCart
-            key={idx}
-            item={item}
-          />
-        ))}
+        <ul>
+          {list.map((item, idx) => (
+            <CardView
+              isCart
+              key={idx}
+              item={item}
+            />
+          ))}
+        </ul>
       </div>
       <div className={cx("priceWrap")}>
         <div className={cx("content")}>

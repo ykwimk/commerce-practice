@@ -14,14 +14,16 @@ const ListView = ({ filter, list, onClickFilter, onClickAddCart }) => {
         onClickFilter={onClickFilter}
       />
       <div className={cx("list")}>
-        {list.map((item, idx) => (
-          <CardView
-            isList
-            key={idx}
-            item={item}
-            onClickAddCart={onClickAddCart}
-          />
-        ))}
+        <ul>
+          {list.map((item, idx) => (
+            <CardView
+              isList
+              key={idx}
+              item={item}
+              onClickAddCart={onClickAddCart}
+            />
+          ))}
+        </ul>
       </div>
     </div>
   )

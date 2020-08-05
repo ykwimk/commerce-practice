@@ -7,7 +7,7 @@ const cx = classNames.bind(style)
 const CardView = ({ isList, item, onClickAddCart }) => {
   const { id, name, image, stock, price, isNew } = item
   return (
-    <div className={cx('card')}>
+    <li className={cx('card')}>
       {isNew && <i className={cx('new')}>new</i>}
       <div className={cx('content')}>
         <div className={cx('image')}>{image}</div>
@@ -53,7 +53,7 @@ const CardView = ({ isList, item, onClickAddCart }) => {
             >취소</button>
         }
       </div>
-    </div>
+    </li>
   )
 }
 
