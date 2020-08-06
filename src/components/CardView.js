@@ -1,11 +1,12 @@
 import React from 'react';
+import _ from 'lodash';
 import classNames from 'classnames';
 import style from './CardView.scss';
 
 const cx = classNames.bind(style)
 
-const CardView = ({ isList, item, onClickAddCart }) => {
-  const { id, name, image, stock, price, isNew } = item
+const CardView = ({ isList, item, onClickAddCart, onClickRemoveCart }) => {
+  const { name, image, stock, price, isNew } = item
   return (
     <li className={cx('card')}>
       {isNew && <i className={cx('new')}>new</i>}
@@ -23,7 +24,9 @@ const CardView = ({ isList, item, onClickAddCart }) => {
             }
             <li>
               <span className={cx("subject")}>수량</span>
-              <span className={cx("count")}>5</span>
+              <span className={cx("count")}>
+                {_.has(item, 'quantity') ? item.quantity : 0}
+              </span>
             </li>
             {!isList &&
               <li className={cx("productPrice")}>
@@ -40,11 +43,17 @@ const CardView = ({ isList, item, onClickAddCart }) => {
               <button
                 type="button"
                 className={cx("subtract")}
+                disabled={
+                  _.has(item, 'quantity') || item.quantity >= 0
+                    ? false
+                    : true
+                }
+                onClick={(e) => onClickRemoveCart(e, item)}
               >빼기</button>
               <button
                 type="button"
                 className={cx("add")}
-                onClick={() => onClickAddCart(id)}
+                onClick={(e) => onClickAddCart(e, item)}
               >담기</button>
             </>
           : <button

@@ -21,7 +21,7 @@ const HeaderView = ({ page, cartList, onClickTab }) => {
         >
           장바구니
           {cartList && cartList.length > 0 &&
-            <span className={cx('count')}>{cartList}</span>
+            <span className={cx('count')}>{cartList.length}</span>
           }
         </button>
       </div>

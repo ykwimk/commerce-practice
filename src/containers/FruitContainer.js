@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-//import { fruits } from '../api/fruits';
 import axios from 'axios';
 import ListView from '../components/ListView';
 import CartView from '../components/CartView';
@@ -19,9 +18,9 @@ class FruitContainer extends React.Component {
   }
 
   getFruitsList = (filter) => {
-    axios.get('http://localhost:3001/list')
+    axios.get('http://localhost:3001/fruits')
     .then((response) => {
-      const fruits = response.data.fruits
+      const fruits = response.data
       this.setState(prevState => {
         if (filter === 0) {
           return {
@@ -51,18 +50,54 @@ class FruitContainer extends React.Component {
     })
   }
 
-  onClickAddCart = (id) => {
-    const { list } = this.state
-    const item = _.find(list, (v) => v.id === id)
+  onClickAddCart = (e, item) => {
+    e.preventDefault()
+    e.stopPropagation()
 
-    this.setState(prevState => {
-      let cartArray = prevState.cartList
-      cartArray.concat({ id, quantity: 0 })
+    const { cartList } = this.state
+    let cartAddArray = cartList
+    const checkCart = cartList.some(i => i.id === item.id)
+    if (checkCart) {
+      const cartItemIdx = cartList.findIndex(i => i.id === item.id)
+      cartList[cartItemIdx].stock -= 1
+      cartList[cartItemIdx].quantity += 1
+      this.setState({
+        cartList: [...cartList]
+      })
+    } else {
+      cartAddArray.push(item)
+      const cartItemIdx = cartAddArray.findIndex(i => i.id === item.id)
+      cartList[cartItemIdx].stock -= 1
+      cartAddArray[cartItemIdx].quantity = 1
+      this.setState({
+        cartList: [...cartAddArray],
+      })
+    }
+  }
 
-      return {
-        cartList: cartArray
-      }
-    })
+  onClickRemoveCart = (e, item) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const { cartList } = this.state
+    let cartRemoveArray = cartList
+    const checkCart = cartList.some(i => i.id === item.id)
+    if (checkCart) {
+      const cartItemIdx = cartList.findIndex(i => i.id === item.id)
+      cartList[cartItemIdx].stock += 1
+      cartList[cartItemIdx].quantity -= 1
+      this.setState({
+        cartList: [...cartList]
+      })
+    } else {
+      cartRemoveArray.push(item)
+      const cartItemIdx = cartRemoveArray.findIndex(i => i.id === item.id)
+      cartList[cartItemIdx].stock += 1
+      cartRemoveArray[cartItemIdx].quantity = 0
+      this.setState({
+        cartList: [...cartRemoveArray],
+      })
+    }
   }
 
   render() {
@@ -82,6 +117,7 @@ class FruitContainer extends React.Component {
               list={list}
               onClickFilter={this.onClickFilter}
               onClickAddCart={this.onClickAddCart}
+              onClickRemoveCart={this.onClickRemoveCart}
             />
           : <CartView list={list} />
         }

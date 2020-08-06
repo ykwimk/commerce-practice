@@ -6,7 +6,7 @@ import CardView from './CardView';
 
 const cx = classNames.bind(style)
 
-const ListView = ({ filter, list, onClickFilter, onClickAddCart }) => {
+const ListView = ({ filter, list, onClickFilter, onClickAddCart, onClickRemoveCart }) => {
   return (
     <div className={cx("wrapper")}>
       <FilterView
@@ -21,6 +21,7 @@ const ListView = ({ filter, list, onClickFilter, onClickAddCart }) => {
               key={idx}
               item={item}
               onClickAddCart={onClickAddCart}
+              onClickRemoveCart={onClickRemoveCart}
             />
           ))}
         </ul>
