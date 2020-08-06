@@ -43,16 +43,13 @@ const CardView = ({ isList, item, onClickAddCart, onClickRemoveCart }) => {
               <button
                 type="button"
                 className={cx("subtract")}
-                disabled={
-                  _.has(item, 'quantity') || item.quantity >= 0
-                    ? false
-                    : true
-                }
+                disabled={!_.has(item, 'quantity') || item.quantity <= 0 ? true : false}
                 onClick={(e) => onClickRemoveCart(e, item)}
               >빼기</button>
               <button
                 type="button"
                 className={cx("add")}
+                disabled={item.stock <= 0 ? true : false}
                 onClick={(e) => onClickAddCart(e, item)}
               >담기</button>
             </>

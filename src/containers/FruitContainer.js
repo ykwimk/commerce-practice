@@ -24,15 +24,15 @@ class FruitContainer extends React.Component {
       this.setState(prevState => {
         if (filter === 0) {
           return {
-            list: _.sortBy(fruits, (o) => [!o.isNew, o.id])
+            list: [..._.sortBy(fruits, (o) => [!o.isNew, o.id])]
           }
         } else if (filter === 1) {
           return {
-            list: fruits.filter(v => !v.isNew)
+            list: [...fruits.filter(v => !v.isNew)]
           }
         } else {
           return {
-            list: fruits.filter(v => v.isNew)
+            list: [...fruits.filter(v => v.isNew)]
           }
         }
       })

@@ -84,8 +84,8 @@
       font-size: 14px;
       color: #333333;
       &:disabled {
-        background: #f9f9f9;
-        color: #ffffff;
+        background: #f9f9f9 !important;
+        color: #ffffff !important;
       }
       &:last-child {
         margin-left: 16px;
