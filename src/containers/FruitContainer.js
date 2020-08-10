@@ -10,31 +10,23 @@ class FruitContainer extends React.Component {
     page: 'list',
     filter: 0,
     list: [],
+    normalFruits: [],
+    newFruits: [],
     cartList: [],
   }
 
   componentDidMount() {
-    this.getFruitsList(0)
+    this.getData()
   }
 
-  getFruitsList = (filter) => {
+  getData = () => {
     axios.get('http://localhost:3001/fruits')
     .then((response) => {
       const fruits = response.data
-      this.setState(prevState => {
-        if (filter === 0) {
-          return {
-            list: [..._.sortBy(fruits, (o) => [!o.isNew, o.id])]
-          }
-        } else if (filter === 1) {
-          return {
-            list: [...fruits.filter(v => !v.isNew)]
-          }
-        } else {
-          return {
-            list: [...fruits.filter(v => v.isNew)]
-          }
-        }
+      this.setState({
+        list: [..._.sortBy(fruits, (o) => [!o.isNew, o.id])],
+        normalFruits: [...fruits.filter(v => !v.isNew)],
+        newFruits: [...fruits.filter(v => v.isNew)]
       })
     })
     .catch(err => console.log(err))
@@ -45,9 +37,7 @@ class FruitContainer extends React.Component {
   }
 
   onClickFilter = (filter) => {
-    this.setState({ filter, }, () => {
-      this.getFruitsList(filter)
-    })
+    this.setState({ filter, })
   }
 
   onClickAddCart = (e, item) => {
@@ -81,27 +71,36 @@ class FruitContainer extends React.Component {
 
     const { cartList } = this.state
     let cartRemoveArray = cartList
-    const checkCart = cartList.some(i => i.id === item.id)
-    if (checkCart) {
-      const cartItemIdx = cartList.findIndex(i => i.id === item.id)
-      cartList[cartItemIdx].stock += 1
-      cartList[cartItemIdx].quantity -= 1
+    const cartItemIdx = cartList.findIndex(i => i.id === item.id)
+    cartList[cartItemIdx].stock += 1
+    cartList[cartItemIdx].quantity -= 1
+    if (item.quantity < 1) {
+      cartRemoveArray.splice(cartItemIdx, 1)
       this.setState({
-        cartList: [...cartList]
+        cartList: cartRemoveArray
       })
     } else {
-      cartRemoveArray.push(item)
-      const cartItemIdx = cartRemoveArray.findIndex(i => i.id === item.id)
-      cartList[cartItemIdx].stock += 1
-      cartRemoveArray[cartItemIdx].quantity = 0
       this.setState({
-        cartList: [...cartRemoveArray],
+        cartList: [...cartList]
       })
     }
   }
 
+  onClickCancelCart = (e, item) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const { cartList } = this.state
+    let cartCancelArray = cartList
+    const cartItemIdx = cartList.findIndex(i => i.id === item.id)
+    cartCancelArray.splice(cartItemIdx, 1)
+    this.setState({
+      cartList: cartCancelArray
+    })
+  }
+
   render() {
-    const { page, filter, list, cartList } = this.state
+    const { page, filter, list, normalFruits, newFruits, cartList } = this.state
     if (_.isEmpty(list)) return null
 
     return (
@@ -115,11 +114,16 @@ class FruitContainer extends React.Component {
           ? <ListView
               filter={filter}
               list={list}
+              normalFruits={normalFruits}
+              newFruits={newFruits}
               onClickFilter={this.onClickFilter}
               onClickAddCart={this.onClickAddCart}
               onClickRemoveCart={this.onClickRemoveCart}
             />
-          : <CartView list={list} />
+          : <CartView
+              cartList={cartList}
+              onClickCancelCart={this.onClickCancelCart}
+            />
         }
       </>
     )

@@ -6,7 +6,19 @@ import CardView from './CardView';
 
 const cx = classNames.bind(style)
 
-const ListView = ({ filter, list, onClickFilter, onClickAddCart, onClickRemoveCart }) => {
+const ListView = ({
+  filter, list, normalFruits, newFruits,
+  onClickFilter, onClickAddCart, onClickRemoveCart
+}) => {
+  let fruitsList
+  if (filter === 0) {
+    fruitsList = list
+  } else if (filter === 1) {
+    fruitsList = normalFruits
+  } else {
+    fruitsList = newFruits
+  }
+
   return (
     <div className={cx("wrapper")}>
       <FilterView
@@ -15,7 +27,7 @@ const ListView = ({ filter, list, onClickFilter, onClickAddCart, onClickRemoveCa
       />
       <div className={cx("listWrap")}>
         <ul className="list">
-          {list.map((item, idx) => (
+          {fruitsList.map((item, idx) => (
             <CardView
               isList
               key={idx}

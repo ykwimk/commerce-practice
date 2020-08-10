@@ -5,7 +5,7 @@ import style from './CardView.scss';
 
 const cx = classNames.bind(style)
 
-const CardView = ({ isList, item, onClickAddCart, onClickRemoveCart }) => {
+const CardView = ({ isList, item, onClickAddCart, onClickRemoveCart, onClickCancelCart }) => {
   const { name, image, stock, price, isNew } = item
   return (
     <li className={cx('card')}>
@@ -31,7 +31,9 @@ const CardView = ({ isList, item, onClickAddCart, onClickRemoveCart }) => {
             {!isList &&
               <li className={cx("productPrice")}>
                 <span className={cx("subject")}>상품금액</span>
-                <span className={cx("count")}>25,000원</span>
+                <span className={cx("count")}>
+                  {`${(item.quantity * price).toLocaleString()}원`}
+                </span>
               </li>
             }
           </ul>
@@ -56,6 +58,7 @@ const CardView = ({ isList, item, onClickAddCart, onClickRemoveCart }) => {
           : <button
               type="button"
               className={cx("subtract")}
+              onClick={(e) => onClickCancelCart(e, item)}
             >취소</button>
         }
       </div>

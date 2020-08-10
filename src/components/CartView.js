@@ -5,16 +5,17 @@ import CardView from './CardView';
 
 const cx = classNames.bind(style)
 
-const CartView = ({ list }) => {
+const CartView = ({ cartList, onClickCancelCart }) => {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("cart")}>
         <ul className="list">
-          {list.map((item, idx) => (
+          {cartList.map((item, idx) => (
             <CardView
               isCart
               key={idx}
               item={item}
+              onClickCancelCart={onClickCancelCart}
             />
           ))}
         </ul>
